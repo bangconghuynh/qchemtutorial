@@ -1,0 +1,243 @@
+% !TeX program = lualatex
+
+%% Preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Class
+\documentclass[%
+	11pt,%
+	oneside,%
+	DIV=15,%
+	BCOR=0mm,%
+	headinclude=true,%
+	footinclude=true,%
+	parskip=half,%
+	headsepline
+]{scrartcl}
+
+
+% Page layout
+\usepackage{setspace}
+
+\onehalfspacing
+
+\setlength{\parindent}{1.5em}
+
+
+% Maths support
+\usepackage{amsmath, amssymb, mathrsfs, mathtools, gensymb, braket} %loading packages for further maths support
+
+\usepackage{mleftright} %loading package for ensuring correct spacing before brackets
+\mleftright
+
+
+% Typography
+\usepackage{csquotes}
+
+\usepackage[usenames, svgnames]{xcolor} %loading package for colour support
+
+
+% Diagrams and captions
+\usepackage{pgfplots} % pgfplots loads tikz automatically
+
+\usetikzlibrary{external}
+
+\tikzexternalize
+
+\newif\iftikzex
+\tikzextrue
+%\tikzexfalse
+
+\iftikzex
+\pgfplotsset{compat=1.16}
+
+\usetikzlibrary{calc, luamath, positioning, pgfplots.groupplots, decorations.pathreplacing}
+
+\pgfplotscreateplotcyclelist{coloronly}{%
+	{red},%
+	{blue},%
+	{black!60!green},%
+	{black!20!orange},%
+	{green!30!brown},%
+	{blue!40!red},%
+	{black!60!blue},%
+	{black!40!yellow},%
+	{red!50!pink},%
+	{green!70!blue},%
+}
+\fi
+
+\makeatletter
+\newcommand*{\useexternalfile}[1]{%
+	\iftikzex
+	\tikzsetnextfilename{tikzoutput/#1-output}%
+	\scalebox{1}{\input{\tikzexternal@filenameprefix#1.tikz}}
+	\else
+	\includegraphics[scale=1]{\tikzexternal@filenameprefix tikzoutput/#1-output.pdf}
+	\fi
+}
+\makeatother
+
+\usepackage{xifthen} %conditionals in plots
+
+\usepackage[%
+format=plain,%
+font={small,stretch=1.1},%
+labelfont=bf,%
+skip=5pt%
+]{caption} %bold pre-texts in captions
+
+
+% Chemistry
+\usepackage[version=4]{mhchem} %loading package for further chemistry typesetting support
+
+
+% Scientific typesetting
+\usepackage{siunitx, graphicx}
+
+
+% Micro-typography
+\usepackage[%
+	activate={true, nocompatibility},%
+	final,%
+	tracking=true,%
+	factor=1100,%
+	stretch=10,%
+	shrink=10%
+]{microtype}
+
+\SetTracking{encoding={*}, shape=sc}{40} % Reduce spacing between sc characters
+
+\microtypecontext{spacing=nonfrench}
+
+
+% Font & languages
+\usepackage[no-math]{fontspec}
+\defaultfontfeatures{%
+	Ligatures = TeX,%
+	Numbers = Lining}
+
+\usepackage{polyglossia} %loading package for language support; polyglossia requires fontspec, so load fontspec first
+\setmainlanguage[variant=uk]{english}
+
+\setmainfont{Alegreya}[%
+	Ligatures	= TeX
+]
+\setsansfont{Alegreya-Sans}
+
+\newcommand\bmmax{2}
+\usepackage{bm}
+
+\DeclareMathSizes{8}{8}{5.5}{5}
+\addtokomafont{disposition}{\rmfamily} %change all heading fonts to roman
+\KOMAoptions{DIV=last}
+
+
+\usepackage[math-style=TeX]{unicode-math}
+\setmathfont{STIX2Math.otf}
+\setmathfont{Alegreya-Italic.otf}[Scale=MatchLowercase, ScaleAgain=0.99999, range = it/{latin, Latin, greek, Greek}]
+\setmathfont{Alegreya-Regular.otf}[Scale=MatchLowercase, ScaleAgain=0.99999, range = up/{latin, Latin, greek, Greek, num}]
+\setmathfont{Alegreya-BoldItalic.otf}[Scale=MatchLowercase,ScaleAgain=0.99999,range=bfit/{latin, Latin, greek, Greek}]
+\setmathfont{Alegreya-Bold.otf}[Scale=MatchLowercase,ScaleAgain=0.99999,range=bfup/{latin, Latin, greek, Greek, num}]
+
+
+% Bookmarking
+\usepackage[hypertexnames=false,hidelinks,hyperfootnotes=false]{hyperref} %loading package for hyperlinks in references and for creating pdf bookmarks automatically; hyperref must be loaded last
+\hypersetup{bookmarksnumbered=true,colorlinks=true,citecolor=blue!60!black,linkcolor=blue!60!black} % this is for screen version
+%\hypersetup{bookmarksnumbered=true,colorlinks=false} % this is for print version
+
+
+% Bibliography
+%\usepackage[%
+%	sorting = none,%
+%	style = numeric-comp,%
+%	autocite = footnote,%
+%	dateabbrev = false,%
+%	url = true,%
+%	isbn = false,%
+%	backend = biber,%
+%	style = verbose]{biblatex}
+
+
+% Footnotes
+\usepackage[perpage]{footmisc}
+%\renewcommand{\thefootnote}{\alph{footnote}}
+
+
+% TOC
+\usepackage[toc]{multitoc}
+\renewcommand*{\multicolumntoc}{2}
+\setlength{\columnseprule}{0.5pt}
+
+
+% Code listing
+\usepackage{listings, lstautogobble, accsupp}
+
+\input{qchemlanguage.tex}
+
+\newcommand{\noncopynumber}[1]{
+	\BeginAccSupp{method=escape,ActualText={}}
+	#1
+	\EndAccSupp{}
+}
+
+\newcommand*{\codelocation}
+
+\lstset{
+	basicstyle = \small\ttfamily, % Global Code Style
+	numberstyle = \tiny\ttfamily\noncopynumber, % style of the line numbers
+	numbers = left,
+	extendedchars = true, % Allows 256 instead of 128 ASCII characters
+	tabsize = 2, % number of spaces indented when discovering a tab
+	columns = fixed, % make all characters equal width
+	autogobble = true,
+}
+
+% Prepend a prompt to each bash line
+% https://tex.stackexchange.com/questions/220790/how-can-i-automatically-prepend-a-prompt-e-g-to-each-line-of-a-listing
+\makeatletter
+% define custom macro that expands to the language name
+% (for comparison purposes)
+\newcommand\langname@bash{}
+\def\langname@bash{bash}
+
+% define custom prompt
+\newcommand\prompt@bash{{\color{Green} \$}\ }
+
+% define a macro (initially empty) and insert it at the beginning
+% of every paragraph
+\newcommand\addedToEveryPar@bash{}
+\lst@AddToHook{EveryPar}{\addedToEveryPar@bash}
+
+% redefine the macro by the custom prompt, but only if the language in use
+% be `bash'
+\lst@AddToHook{PreInit}{%
+	\ifx\lst@language\langname@bash%
+	\let\addedToEveryPar@bash\prompt@bash%
+	\fi
+}
+\makeatother
+
+
+% Cross-referencing
+\usepackage[capitalise, noabbrev]{cleveref} %loading package for enhanced cross-referencing; cleveref must be loaded after hyperref and listings
+
+%% Main document %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	\vspace{1cm}
+	\noindent
+	\bgroup
+	\renewcommand\arraystretch{1.5} \begin{tabular*}{\linewidth}{>{\centering\arraybackslash}m{\linewidth}}
+		\hline
+		\textbf{\Large Introduction to \textsc{Q-Chem} and \textsc{QCMagic}}\\
+		\textit{\large A brief tutorial}\\
+		\textcopyright Thom Group Cambridge, 2019\\[-8pt]
+		Maintainer: Bang C. Huynh (\href{mailto:cbh31@cam.ac.uk}{\texttt{cbh31[at]cam.ac.uk}})\\
+		\hline
+	\end{tabular*}
+	\egroup
+	
+	\tableofcontents
+	
+	\clearpage
+	
+	\input{singlepoint/singlepoint}
+\end{document} 

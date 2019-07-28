@@ -1,0 +1,47 @@
+% !TeX root = qchemtutorial.tex
+
+\definecolor{eclipseBlue}{RGB}{42,0.0,255}
+\definecolor{eclipseGreen}{RGB}{63,127,95}
+\definecolor{eclipsePurple}{RGB}{127,0,85}
+
+\lstdefinelanguage{QChem}
+{
+	%% List of keywords
+	alsoletter = {_\$},
+	% Rem variables
+	keywords = [1]{
+		SCF_MINFIND_INITNORM,
+		BASIS,
+		EXCHANGE,
+		CORRELATION,
+		UNRESTRICTED,
+		SCF_GUESS,
+		SCF_CONVERGENCE,
+		SCF_ALGORITHM,
+		SCF_MAX_CYCLES,
+		MOM_START,
+		PRINT_ORBITALS,
+		SCF_PRINT,
+	},
+	keywords = [2]{
+		\$molecule,
+		\$rem,
+		\$end,
+	},
+	comment = [l]{!},
+	% Style
+	sensitive=false, % keywords are not case-sensitive
+	caption = \lstname,
+	backgroundcolor = \color{Cornsilk},
+	frame = trbl,
+	% Syntax highlighting
+	keywordstyle = [1]{\color{eclipsePurple}},
+	keywordstyle = [2]{\color{Navy}},
+	commentstyle = \color{eclipseGreen}
+}
+
+\lstdefinestyle{custombash}{
+	language = bash,
+	frame = trbl,
+	backgroundcolor = \color{Seashell},
+}

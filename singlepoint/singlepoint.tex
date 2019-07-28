@@ -1,0 +1,14 @@
+\renewcommand*{\codelocation}{singlepoint/codesnippets}
+
+\section{Single-Point Calculations}
+
+	We begin with a simple Hartree--Fock calculation for the simplest closed-shell system, a \ce{He} atom, to familiarise ourselves with the syntax of \textsc{Q-Chem}.
+	
+	\begin{lstlisting}[style = custombash]
+		qchem -nt 6 test.inp test.out
+	\end{lstlisting}
+	
+	
+	Shown in \cref{listing:He.inp}
+	
+	\lstinputlisting[label = {listing:He.inp}, language = QChem]{\codelocation/He.inp}
