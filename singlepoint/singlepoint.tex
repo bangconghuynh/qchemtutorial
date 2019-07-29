@@ -1,14 +1,74 @@
-\renewcommand*{\codelocation}{singlepoint/codesnippets}
+\renewcommand*{\codelocation}{codesnippets/singlepoint}
+\tikzsetexternalprefix{./singlepoint/tikz/}
 
 \section{Single-Point Calculations}
 
-	We begin with a simple Hartree--Fock calculation for the simplest closed-shell system, a \ce{He} atom, to familiarise ourselves with the syntax of \textsc{Q-Chem}.
+		\subsection{Restricted Hartree--Fock (UHF)}
 	
-	\begin{lstlisting}[style = custombash]
-		qchem -nt 6 test.inp test.out
-	\end{lstlisting}
+		We begin with a simple Hartree--Fock (HF) calculation for the simplest closed-shell system, a \ce{He} atom, to familiarise ourselves with the syntax of \textsc{Q-Chem}.
+		Every \textsc{Q-Chem} run requires an input file in which the molecular configuration and all relevant calculation parameters are specified.
+		\Cref{listing:He.RHF.STO-3G.inp} gives an example of such an input file.
+		%
+			\lstinputlisting[label={listing:He.RHF.STO-3G.inp}, language=QChemInput]{\codelocation/He.RHF.STO-3G.inp}
+		
+		We observe the following in \cref{listing:He.RHF.STO-3G.inp}:
+			\begin{enumerate}
+				\item There are two sections in this file: \qchemsection{molecule} specifies the molecular configuration of the system and \qchemsection{rem} specifies the parameters to be used in the calculation.
+				\item The system of interest consists of a single \ce{He} nucleus located at the origin (line~\texttt{3}).
+				\item The overall charge of the system is zero (first number on line~\texttt{2}), so there are two electrons in total.
+				\item The ``spin multiplicity'' of the system is supposed to be \SI{1}{} (second number on line~\texttt{2}).
+				However, one cannot in general constrain the value of $S$ in a conventional HF calculation.
+				Therefore, the ``multiplicity'' specified here is actually equal to $2M_S + 1$ instead of $2S + 1$.
+				This system thus has $M_S = 0$, but the existence and meaningfulness of its $S$ value is dependent upon the HF method and the solutions obtained.
+				\item A self-consistent-field (SCF) restricted HF (RHF) calculation will be run on this system in the STO-3G basis set using the DIIS converging algorithm starting from the guess molecular orbital (MO) coefficients obtained by diagonalising the one-electron Hamiltonian matrix (lines \texttt{6}--\texttt{11}).
+				\item The convergence criterion is when the maximum DIIS error becomes smaller than \SI{1e-13}{} (line~\texttt{12}). This is a very tight criterion.
+				\item The maximum number of SCF cycles is \SI{1000}{} (line~\texttt{13}). This is more than enough here because convergence can be reached very quickly in this particular example.
+				\item During each SCF cycle, the code maximises overlap with the orbitals from the previous cycle. This behaviour starts from cycle 1 (line~\texttt{14}) where the code maximises overlap with the guess orbitals.
+				\item After each cycle, the code prints out only the minimal and useful output together with the component breakdown of SCF electronic energy (line~\texttt{15}).
+				\item After convergence, the code prints out the occupied orbitals plus five virtual orbitals (line~\texttt{16}).
+			\end{enumerate}
 	
+		To carry out the above \textsc{Q-Chem} calculation, copy \cref{listing:He.RHF.STO-3G.inp} from the \texttt{git} repository to a location of your choice and then execute the following command in a shell:
+		%
+			\begin{lstlisting}[style = custombash]
+				qchem -nt 6 He.RHF.STO-3G.inp He.RHF.STO-3G.out
+			\end{lstlisting}
+		%
+		which instructs \textsc{Q-Chem} to run a calculation with the input parameters specified in \texttt{He.RHF.STO-3G.inp} using six OpenMP threads and write the outputs to \texttt{He.RHF.STO-3G.out}.
+		%
+			\begin{Task}
+				Examine the output file and determine the following:
+				\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
+					\item the DIIS error at convergence;
+					\item the SCF energy of the converged solution;
+					\item the contributing components of the SCF energy;
+					\item the MO energies; and
+					\item the MO coefficients in terms of the atomic orbital (AO) basis functions.
+				\end{enumerate}
+				What is the value of $\langle \hat{S}^2 \rangle$ of the converged solution and why? Assign a term symbol to this solution.
+			\end{Task}
+
+		
+	\subsection{Unrestricted Hartree--Fock (UHF)}
+		
+		Duplicate \texttt{He.RHF.STO-3G.inp} and give it a different name such as \texttt{He.UHF.STO-3G.inp}.
+		Then, change the value of \qchemremvar{UNRESTRICTED} on line~\texttt{9} to \texttt{true} as shown in \cref{listing:He.UHF.STO-3G.inp} and run \textsc{Q-Chem} on this new file as above to produce a new output file, say, \texttt{He.UHF.STO-3G.out}.
+		%
+			\lstinputlisting[label={listing:He.UHF.STO-3G.inp}, firstline=9, lastline=9, firstnumber=9, language=QChemInput]{\codelocation/He.UHF.STO-3G.inp}
+		%
+			\begin{Task}
+				Examine \texttt{He.UHF.STO-3G.out} and compare the following with those in the RHF case: 
+				\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
+					\item the SCF energy of the converged solution;
+					\item the contributing components of the SCF energy;
+					\item the value of $\langle \hat{S}^2 \rangle$;
+					\item the structure of the MO coefficients;
+					\item the MO energies; and
+					\item the MO coefficients in terms of the atomic orbital (AO) basis functions.
+				\end{enumerate}
+				Is this converged solution identical to that in the RHF case? If it is, explain the origin of the identicality.
+			\end{Task}
+
+		
+	\subsection{Effects of the Basis Set}
 	
-	Shown in \cref{listing:He.inp}
-	
-	\lstinputlisting[label = {listing:He.inp}, language = QChem]{\codelocation/He.inp}

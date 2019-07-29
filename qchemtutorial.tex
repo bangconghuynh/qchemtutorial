@@ -94,6 +94,10 @@ skip=5pt%
 \usepackage{siunitx, graphicx}
 
 
+%% Lists
+\usepackage{enumitem}
+
+
 % Micro-typography
 \usepackage[%
 	activate={true, nocompatibility},%
@@ -123,7 +127,7 @@ skip=5pt%
 ]
 \setsansfont{Alegreya-Sans}
 
-\newcommand\bmmax{2}
+\newcommand*\bmmax{2}
 \usepackage{bm}
 
 \DeclareMathSizes{8}{8}{5.5}{5}
@@ -159,7 +163,6 @@ skip=5pt%
 
 % Footnotes
 \usepackage[perpage]{footmisc}
-%\renewcommand{\thefootnote}{\alph{footnote}}
 
 
 % TOC
@@ -168,13 +171,42 @@ skip=5pt%
 \setlength{\columnseprule}{0.5pt}
 
 
+% Framed environment
+\usepackage[framemethod = tikz]{mdframed}
+
+\newcounter{Task}[section]
+\newenvironment{Task}[1][]{%
+	\stepcounter{Task}%
+	\tikzexternaldisable
+	\ifstrempty{#1}%
+	{\mdfsetup{%
+			frametitle={%
+				\tikz[baseline=(current bounding box.east),outer sep=0pt]
+				\node[line width=1pt,anchor=east,rectangle,rounded corners=1ex,draw=black,fill=LightSalmon]
+				{\strut \textbf{Task}~\theTask};}}
+	}%
+	{\mdfsetup{%
+			frametitle={%
+				\tikz[baseline=(current bounding box.east),outer sep=0pt]
+				\node[line width=1pt,anchor=east,rectangle,rounded corners=1ex,draw=black,fill=LightSalmon]
+				{\strut \textbf{Task}~\theTask:#1};}}%
+	}%
+	\tikzexternaldisable
+	\mdfsetup{innertopmargin=10pt,linecolor=black,backgroundcolor=LightGoldenrodYellow,%
+		linewidth=1pt,topline=true,%
+		frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+	\begin{mdframed}[]\relax%
+	}{\end{mdframed}
+}
+
+
 % Code listing
 \usepackage{listings, lstautogobble, accsupp}
 
 \input{qchemlanguage.tex}
 
-\newcommand{\noncopynumber}[1]{
-	\BeginAccSupp{method=escape,ActualText={}}
+\newcommand*{\noncopy}[1]{
+	\BeginAccSupp{method=escape, ActualText={}}
 	#1
 	\EndAccSupp{}
 }
@@ -183,10 +215,8 @@ skip=5pt%
 
 \lstset{
 	basicstyle = \small\ttfamily, % Global Code Style
-	numberstyle = \tiny\ttfamily\noncopynumber, % style of the line numbers
-	numbers = left,
 	extendedchars = true, % Allows 256 instead of 128 ASCII characters
-	tabsize = 2, % number of spaces indented when discovering a tab
+	tabsize = 4, % number of spaces indented when discovering a tab
 	columns = fixed, % make all characters equal width
 	autogobble = true,
 }
@@ -194,21 +224,18 @@ skip=5pt%
 % Prepend a prompt to each bash line
 % https://tex.stackexchange.com/questions/220790/how-can-i-automatically-prepend-a-prompt-e-g-to-each-line-of-a-listing
 \makeatletter
-% define custom macro that expands to the language name
-% (for comparison purposes)
-\newcommand\langname@bash{}
+% define custom macro that expands to the language name (for comparison purposes)
+\newcommand*\langname@bash{}
 \def\langname@bash{bash}
 
 % define custom prompt
-\newcommand\prompt@bash{{\color{Green} \$}\ }
+\newcommand*\prompt@bash{{\color{Green} \noncopy{\$}}}
 
-% define a macro (initially empty) and insert it at the beginning
-% of every paragraph
-\newcommand\addedToEveryPar@bash{}
+% define a macro (initially empty) and insert it at the beginning of every paragraph
+\newcommand*\addedToEveryPar@bash{}
 \lst@AddToHook{EveryPar}{\addedToEveryPar@bash}
 
-% redefine the macro by the custom prompt, but only if the language in use
-% be `bash'
+% redefine the macro by the custom prompt, but only if the language in use be `bash'
 \lst@AddToHook{PreInit}{%
 	\ifx\lst@language\langname@bash%
 	\let\addedToEveryPar@bash\prompt@bash%
@@ -236,6 +263,10 @@ skip=5pt%
 	\egroup
 	
 	\tableofcontents
+	
+	
+	Before we begin, make sure that you have a copy of \textsc{Q-Chem} 5.2 compiled with parallelisation on your workstation and that you are sufficiently familiar with Unix shell commands to navigate around and perform various day-to-day tasks.
+	This tutorial assumes that you already know how to carry out such tasks and focuses entirely on \textsc{Q-Chem} and \textsc{QCMagic}.
 	
 	\clearpage
 	

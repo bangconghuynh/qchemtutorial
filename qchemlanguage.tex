@@ -4,7 +4,7 @@
 \definecolor{eclipseGreen}{RGB}{63,127,95}
 \definecolor{eclipsePurple}{RGB}{127,0,85}
 
-\lstdefinelanguage{QChem}
+\lstdefinelanguage{QChemInput}
 {
 	%% List of keywords
 	alsoletter = {_\$},
@@ -30,18 +30,41 @@
 	},
 	comment = [l]{!},
 	% Style
-	sensitive=false, % keywords are not case-sensitive
+	sensitive = false, % keywords are not case-sensitive
 	caption = \lstname,
 	backgroundcolor = \color{Cornsilk},
 	frame = trbl,
+	numberstyle = \tiny\ttfamily\noncopy, % style of the line numbers
+	numbers = left,
 	% Syntax highlighting
 	keywordstyle = [1]{\color{eclipsePurple}},
 	keywordstyle = [2]{\color{Navy}},
 	commentstyle = \color{eclipseGreen}
 }
 
+\captionsetup[lstlisting]{textfont = tt}
+
+\newcommand*{\qchemsection}[1]{{\color{Navy} \texttt{\$#1}}}
+\newcommand*{\qchemremvar}[1]{{\color{eclipsePurple} \texttt{#1}}}
+
 \lstdefinestyle{custombash}{
 	language = bash,
 	frame = trbl,
 	backgroundcolor = \color{Seashell},
+}
+
+\lstdefinelanguage{QChemOutput}
+{
+	%% List of keywords
+	alsoletter = {},
+	keywords = [1]{
+	},
+	% Style
+	sensitive = false, % keywords are not case-sensitive
+	caption = \lstname,
+	backgroundcolor = \color{Cornsilk},
+	frame = trbl,
+	numberstyle = \tiny\ttfamily\noncopy, % style of the line numbers
+	numbers = left,
+	% Syntax highlighting
 }

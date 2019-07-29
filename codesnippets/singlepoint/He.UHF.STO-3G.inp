@@ -1,0 +1,17 @@
+$molecule
+0 1
+    He  0   0   0
+$end
+$rem
+    BASIS STO-3G
+    EXCHANGE hf
+    CORRELATION none
+    UNRESTRICTED true
+    SCF_GUESS CORE
+    SCF_ALGORITHM DIIS
+    SCF_CONVERGENCE 13
+    SCF_MAX_CYCLES 1000
+    MOM_START 1
+    SCF_PRINT 1
+    PRINT_ORBITALS true
+$end
