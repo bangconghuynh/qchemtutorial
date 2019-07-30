@@ -183,17 +183,18 @@ skip=5pt%
 			frametitle={%
 				\tikz[baseline=(current bounding box.east),outer sep=0pt]
 				\node[line width=1pt,anchor=east,rectangle,rounded corners=1ex,draw=black,fill=LightSalmon]
-				{\strut \textbf{Task}~\theTask};}}
+				{\strut \textbf{Task}~\thesection.\theTask};}}
 	}%
 	{\mdfsetup{%
 			frametitle={%
 				\tikz[baseline=(current bounding box.east),outer sep=0pt]
 				\node[line width=1pt,anchor=east,rectangle,rounded corners=1ex,draw=black,fill=LightSalmon]
-				{\strut \textbf{Task}~\theTask:#1};}}%
+				{\strut \textbf{Task}~\thesection.\theTask:#1};}}%
 	}%
 	\tikzexternaldisable
 	\mdfsetup{innertopmargin=10pt,linecolor=black,backgroundcolor=LightGoldenrodYellow,%
 		linewidth=1pt,topline=true,%
+		nobreak=true,
 		frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
 	\begin{mdframed}[]\relax%
 	}{\end{mdframed}

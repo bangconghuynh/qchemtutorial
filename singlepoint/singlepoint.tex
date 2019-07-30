@@ -3,7 +3,7 @@
 
 \section{Single-Point Calculations}
 
-		\subsection{Restricted Hartree--Fock (UHF)}
+		\subsection{Restricted Hartree--Fock (RHF)}
 	
 		We begin with a simple Hartree--Fock (HF) calculation for the simplest closed-shell system, a \ce{He} atom, to familiarise ourselves with the syntax of \textsc{Q-Chem}.
 		Every \textsc{Q-Chem} run requires an input file in which the molecular configuration and all relevant calculation parameters are specified.
@@ -19,7 +19,7 @@
 				\item The ``spin multiplicity'' of the system is supposed to be \SI{1}{} (second number on line~\texttt{2}).
 				However, one cannot in general constrain the value of $S$ in a conventional HF calculation.
 				Therefore, the ``multiplicity'' specified here is actually equal to $2M_S + 1$ instead of $2S + 1$.
-				This system thus has $M_S = 0$, but the existence and meaningfulness of its $S$ value is dependent upon the HF method and the solutions obtained.
+				This system thus has $M_S = 0$, but whether or not $S$ is a ``good'' quantum number for the system is dependent upon the HF method and the solutions obtained.
 				\item A self-consistent-field (SCF) restricted HF (RHF) calculation will be run on this system in the STO-3G basis set using the DIIS converging algorithm starting from the guess molecular orbital (MO) coefficients obtained by diagonalising the one-electron Hamiltonian matrix (lines \texttt{6}--\texttt{11}).
 				\item The convergence criterion is when the maximum DIIS error becomes smaller than \SI{1e-13}{} (line~\texttt{12}). This is a very tight criterion.
 				\item The maximum number of SCF cycles is \SI{1000}{} (line~\texttt{13}). This is more than enough here because convergence can be reached very quickly in this particular example.
@@ -66,9 +66,53 @@
 					\item the MO energies; and
 					\item the MO coefficients in terms of the atomic orbital (AO) basis functions.
 				\end{enumerate}
-				Is this converged solution identical to that in the RHF case? If it is, explain the origin of the identicality.
+				Is this converged solution identical to the RHF one? If so, explain the origin of the identicality.
 			\end{Task}
 
 		
-	\subsection{Effects of the Basis Set}
-	
+	\subsection{Effects of Basis Sets}
+		Choosing an appropriate basis set is an important aspect of electronic structure calculation: a suitable basis set not only gives sensible and sufficiently accurate results but also saves computation time and storage space.
+		To investigate basis set effects on the solutions obtained so far, duplicate \texttt{He.RHF.STO-3G.inp} and \texttt{He.UHF.STO-3G.inp} to \texttt{He.RHF.6-31GSTAR.inp} and \texttt{He.UHF.6-31GSTAR.inp}, respectively, then change the value of \qchemremvar{BASIS} on line~\texttt{6} to \texttt{6-31G*} as shown in \cref{listing:He.RHF.6-31GSTAR.inp,listing:He.UHF.6-31GSTAR.inp}.
+ 		Run \textsc{Q-Chem} on these files as above to produce \texttt{He.RHF.6-31GSTAR.out} and \texttt{He.UHF.6-31GSTAR.out}.
+		%
+			\lstinputlisting[label={listing:He.RHF.6-31GSTAR.inp}, firstline=6, lastline=6, firstnumber=6, language=QChemInput]{\codelocation/He.RHF.6-31GSTAR.inp}
+		%
+		%
+			\lstinputlisting[label={listing:He.UHF.6-31GSTAR.inp}, firstline=6, lastline=6, firstnumber=6, language=QChemInput]{\codelocation/He.UHF.6-31GSTAR.inp}
+
+			\begin{Task}
+				Examine \texttt{He.RHF.6-31GSTAR.out} and \texttt{He.UHF.6-31GSTAR.out} and answer the following: 
+				\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
+					\item Are the RHF and UHF solutions located in 6-31G* identical to each other?
+					\item Can these solutions be assigned to the same term as those in STO-3G? If so, are they a better description of this term and why?
+				\end{enumerate}
+			\end{Task}
+		
+		But how exactly does 6-31G* differ from STO-3G for a \ce{He} atom?
+		One possible way to determine this is to ask \textsc{Q-Chem} to print out the basis set definition.
+		This is achieved by setting \qchemremvar{PRINT\_GENERAL\_BASIS} to \texttt{true} in the \qchemsection{rem} section.
+		Another way is to look it up on \href{https://www.basissetexchange.org/}{\texttt{https://www.basissetexchange.org/}}.
+		
+		Shown in \cref{listing:He.RHF.6-31GSTAR.withbasis.out} is the 6-31G* basis set definition for a \ce{He} atom as printed by \textsc{Q-Chem}.
+		This tells us that, in 6-31G*, each electron in a \ce{He} atom is described by two $s$ shells. 
+		The radial part of the first shell is constructed by contracting three primitive Gaussian functions whereas the radial part of the second shell is constructed by contracting only a single primitive Gaussian function.
+		The Gaussian primitive exponents and the contraction coefficients are given by the first and second columns respectively within each shell.
+		Since both of these shells are of angular momentum $s$, their angular parts are simply $1$.
+		%
+			\lstinputlisting[label={listing:He.RHF.6-31GSTAR.withbasis.out}, firstline=122, lastline=134, firstnumber=122, language=QChemOutput]{\codelocation/He.RHF.6-31GSTAR.withbasis.out}
+		%
+
+			\begin{Task}
+				\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
+					\item In 6-31G*, how many basis functions are used to describe each orbital of \ce{He}?
+					\item How does STO-3G differ from 6-31G* for \ce{He}?
+				\end{enumerate}
+				
+				6-31G** is another small basis set for \ce{He} in which each electron is described by two $s$ shells and one $p$ shell. Run an RHF calculation in this basis and answer the following:
+					\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
+							\setcounter{enumi}{2}
+							\item How many basis functions are used to describe each orbital of \ce{He} in this basis set? Why is this number different from the number of shells in this basis set?
+							\item Examine the orbital coefficient matrix carefully. Why does it have a very particular block-diagonal form?
+							\item Does 6-31G** offer any improvement over 6-31G* for the ground RHF solution of \ce{He}?
+					\end{enumerate}
+			\end{Task}

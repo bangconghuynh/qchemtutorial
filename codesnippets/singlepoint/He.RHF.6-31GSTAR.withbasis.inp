@@ -1,9 +1,9 @@
 $molecule
-    0 1
+0 1
     He  0   0   0
 $end
 $rem
-    BASIS STO-3G
+    BASIS 6-31G*
     EXCHANGE hf
     CORRELATION none
     UNRESTRICTED false
@@ -14,4 +14,5 @@ $rem
     MOM_START 1
     SCF_PRINT 1
     PRINT_ORBITALS true
+    PRINT_GENERAL_BASIS true
 $end
