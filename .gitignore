@@ -5,6 +5,7 @@
 *.lot
 *.fls
 *.out
+!codesnippets/*/*.out
 *.toc
 *.fmt
 *.fot
