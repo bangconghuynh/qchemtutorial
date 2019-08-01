@@ -175,21 +175,22 @@ skip=5pt%
 \usepackage[framemethod = tikz]{mdframed}
 
 \newcounter{Task}[section]
+\renewcommand{\theTask}{\thesection.\arabic{Task}}
 \newenvironment{Task}[1][]{%
-	\stepcounter{Task}%
+	\refstepcounter{Task}%
 	\tikzexternaldisable
 	\ifstrempty{#1}%
 	{\mdfsetup{%
 			frametitle={%
 				\tikz[baseline=(current bounding box.east),outer sep=0pt]
 				\node[line width=1pt,anchor=east,rectangle,rounded corners=1ex,draw=black,fill=LightSalmon]
-				{\strut \textbf{Task}~\thesection.\theTask};}}
+				{\strut \textbf{Task}~\theTask};}}
 	}%
 	{\mdfsetup{%
 			frametitle={%
 				\tikz[baseline=(current bounding box.east),outer sep=0pt]
 				\node[line width=1pt,anchor=east,rectangle,rounded corners=1ex,draw=black,fill=LightSalmon]
-				{\strut \textbf{Task}~\thesection.\theTask:#1};}}%
+				{\strut \textbf{Task}~\theTask:#1};}}%
 	}%
 	\tikzexternaldisable
 	\mdfsetup{innertopmargin=10pt,linecolor=black,backgroundcolor=LightGoldenrodYellow,%
@@ -248,6 +249,8 @@ skip=5pt%
 % Cross-referencing
 \usepackage[capitalise, noabbrev]{cleveref} %loading package for enhanced cross-referencing; cleveref must be loaded after hyperref and listings
 
+\Crefname{Task}{Task}{Tasks}
+
 %% Main document %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 	\vspace{1cm}
@@ -263,6 +266,7 @@ skip=5pt%
 	\end{tabular*}
 	\egroup
 	
+	\setcounter{tocdepth}{2}
 	\tableofcontents
 	
 	

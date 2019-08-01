@@ -1,0 +1,38 @@
+$molecule
+    0 1
+    He  0   0   0
+$end
+$rem
+    BASIS 6-31G*
+    EXCHANGE hf
+    CORRELATION none
+    UNRESTRICTED false
+    SCF_GUESS CORE
+    SCF_ALGORITHM DIIS
+    SCF_CONVERGENCE 13
+    SCF_MAX_CYCLES 1000
+    MOM_START 1
+    SCF_PRINT 1
+    PRINT_ORBITALS true
+$end
+@@@
+$molecule
+    read
+$end
+$rem
+    BASIS 6-31G*
+    EXCHANGE hf
+    CORRELATION none
+    UNRESTRICTED false
+    SCF_GUESS read
+    SCF_ALGORITHM DIIS
+    SCF_CONVERGENCE 13
+    SCF_MAX_CYCLES 1000
+    MOM_START 1
+    SCF_PRINT 1
+    PRINT_ORBITALS true
+$end
+$occupied
+    2
+    2
+$end
