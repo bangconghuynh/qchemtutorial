@@ -158,7 +158,7 @@
 			The solution converged to in the first job should be identical to that obtained in \cref{task:He.RUHF.6-31GSTAR}.
 			The solution found in the second job is a new RHF solution with properties as expected from the discussion earlier.
 			%
-				\lstinputlisting[label={listing:He.RHF.6-31GSTAR.excited.inp}, firstline=18, lastline=38, firstnumber=18, language=QChemInput]{\codelocation/He.RHF.6-31GSTAR.excited.inp}
+				\lstinputlisting[label={listing:He.RHF.6-31GSTAR.excited.inp}, firstline=18, lastline=38, firstnumber=18, language=QChemInput]{\codelocation/excited/He.RHF.6-31GSTAR.excited.inp}
 			%
 			
 			So how does this work exactly?
@@ -184,7 +184,8 @@
 					Use a similar method to locate all linearly independent RHF solutions of \ce{He} in 6-31G** and answer the following:
 						\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
 							\setcounter{enumi}{3}
-							\item How do the SCF energy differences compare to the orbital energy gaps in these solutions?
+							\item Why are some of these solutions degenerate?
 							\item Is it possible to assign term symbols to all of these solutions? Why or why not?
+							\item Can this method be used to obtain other solutions that are linear combinations of the degenerate solutions found above?
 						\end{enumerate}
-				\end{Task}			
+				\end{Task}
