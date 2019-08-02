@@ -1,4 +1,6 @@
+% !TeX document-id = {355f5016-c7ca-4175-bb5e-82c4a2e94bb3}
 % !TeX program = lualatex
+% !TeX TXS-program:bibliography = txs:///biber
 
 %% Preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Class
@@ -149,16 +151,19 @@ skip=5pt%
 %\hypersetup{bookmarksnumbered=true,colorlinks=false} % this is for print version
 
 
+
+
 % Bibliography
-%\usepackage[%
-%	sorting = none,%
-%	style = numeric-comp,%
-%	autocite = footnote,%
-%	dateabbrev = false,%
-%	url = true,%
-%	isbn = false,%
-%	backend = biber,%
-%	style = verbose]{biblatex}
+\usepackage[%
+	sorting=none,%
+	style=numeric-comp,%
+	autocite=superscript,%
+	dateabbrev=false,%
+	url=false,%
+	isbn=false,%
+	backend=biber%
+]{biblatex}
+\addbibresource{bib/qchemtutorial.bib}
 
 
 % Footnotes
@@ -260,7 +265,7 @@ skip=5pt%
 		\hline
 		\textbf{\Large Introduction to \textsc{Q-Chem} and \textsc{QCMagic}}\\
 		\textit{\large A brief tutorial}\\
-		\textcopyright Thom Group Cambridge, 2019\\[-8pt]
+		\textcopyright\, Thom Group Cambridge, 2019\\[-8pt]
 		Maintainer: Bang C. Huynh (\href{mailto:cbh31@cam.ac.uk}{\texttt{cbh31[at]cam.ac.uk}})\\
 		\hline
 	\end{tabular*}
@@ -276,4 +281,7 @@ skip=5pt%
 	\clearpage
 	
 	\input{singlepoint/singlepoint}
+	
+	\clearpage
+	\printbibliography[title={References}]
 \end{document} 

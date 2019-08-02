@@ -5,48 +5,48 @@
 
 		\subsection{Restricted Hartree--Fock (RHF)}
 	
-		We begin with a simple Hartree--Fock (HF) calculation for the simplest closed-shell system, a \ce{He} atom, to familiarise ourselves with the syntax of \textsc{Q-Chem}.
-		Every \textsc{Q-Chem} run requires an input file in which the molecular configuration and all relevant calculation parameters are specified.
-		\Cref{listing:He.RHF.STO-3G.inp} gives an example of such an input file.
-		%
-			\lstinputlisting[label={listing:He.RHF.STO-3G.inp}, language=QChemInput]{\codelocation/He.RHF.STO-3G.inp}
-		
-		We observe the following in \cref{listing:He.RHF.STO-3G.inp}:
-			\begin{enumerate}
-				\item There are two sections in this file: \qchemsection{molecule} specifies the molecular configuration of the system and \qchemsection{rem} specifies the parameters to be used in the calculation.
-				\item The system of interest consists of a single \ce{He} nucleus located at the origin (line~\texttt{3}).
-				\item The overall charge of the system is zero (first number on line~\texttt{2}), so there are two electrons in total.
-				\item The ``spin multiplicity'' of the system is supposed to be \SI{1}{} (second number on line~\texttt{2}).
-				However, one cannot in general constrain the value of $S$ in a conventional HF calculation.
-				Therefore, the ``multiplicity'' specified here is actually equal to $2M_S + 1$ instead of $2S + 1$.
-				This system thus has $M_S = 0$, but whether or not $S$ is a ``good'' quantum number for the system is dependent upon the HF method and the solutions obtained.
-				\item A self-consistent-field (SCF) restricted HF (RHF) calculation will be run on this system in the STO-3G basis set using the DIIS converging algorithm starting from the guess molecular orbital (MO) coefficients obtained by diagonalising the one-electron Hamiltonian matrix (lines \texttt{6}--\texttt{11}).
-				\item The convergence criterion is when the maximum DIIS error becomes smaller than \SI{1e-13}{} (line~\texttt{12}). This is a very tight criterion.
-				\item The maximum number of SCF cycles is \SI{1000}{} (line~\texttt{13}). This is more than enough here because convergence can be reached very quickly in this particular example.
-				\item During each SCF cycle, the code maximises overlap with the orbitals from the previous cycle. This behaviour starts from cycle 1 (line~\texttt{14}) where the code maximises overlap with the guess orbitals.
-				\item After each cycle, the code prints out only the minimal and useful output together with the component breakdown of SCF electronic energy (line~\texttt{15}).
-				\item After convergence, the code prints out the occupied orbitals plus five virtual orbitals (line~\texttt{16}).
-			\end{enumerate}
-	
-		To carry out the above \textsc{Q-Chem} calculation, copy \cref{listing:He.RHF.STO-3G.inp} from the \texttt{git} repository to a location of your choice and then execute the following command in a shell:
-		%
-			\begin{lstlisting}[style = custombash]
-				qchem -nt 6 He.RHF.STO-3G.inp He.RHF.STO-3G.out
-			\end{lstlisting}
-		%
-		which instructs \textsc{Q-Chem} to run a calculation with the input parameters specified in \texttt{He.RHF.STO-3G.inp} using six OpenMP threads and write the outputs to \texttt{He.RHF.STO-3G.out}.
-		%
-			\begin{Task}
-				Examine the output file and determine the following:
-				\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
-					\item the DIIS error at convergence;
-					\item the SCF energy of the converged solution;
-					\item the contributing components of the SCF energy;
-					\item the MO energies; and
-					\item the MO coefficients in terms of the atomic orbital (AO) basis functions.
+			We begin with a simple Hartree--Fock (HF) calculation for the simplest closed-shell system, a \ce{He} atom, to familiarise ourselves with the syntax of \textsc{Q-Chem}.
+			Every \textsc{Q-Chem} run requires an input file in which the molecular configuration and all relevant calculation parameters are specified.
+			\Cref{listing:He.RHF.STO-3G.inp} gives an example of such an input file.
+			%
+				\lstinputlisting[label={listing:He.RHF.STO-3G.inp}, language=QChemInput]{\codelocation/He.RHF.STO-3G.inp}
+			
+			We observe the following in \cref{listing:He.RHF.STO-3G.inp}:
+				\begin{enumerate}
+					\item There are two sections in this file: \qchemsection{molecule} specifies the molecular configuration of the system and \qchemsection{rem} specifies the parameters to be used in the calculation.
+					\item The system of interest consists of a single \ce{He} nucleus located at the origin (line~\texttt{3}).
+					\item The overall charge of the system is zero (first number on line~\texttt{2}), so there are two electrons in total.
+					\item The ``spin multiplicity'' of the system is supposed to be \SI{1}{} (second number on line~\texttt{2}).
+					However, one cannot in general constrain the value of $S$ in a conventional HF calculation.
+					Therefore, the ``multiplicity'' specified here is actually equal to $2M_S + 1$ instead of $2S + 1$.
+					This system thus has $M_S = 0$, but whether or not $S$ is a ``good'' quantum number for the system is dependent upon the HF method and the solutions obtained.
+					\item A self-consistent-field (SCF) restricted HF (RHF) calculation will be run on this system in the STO-3G basis set using the DIIS converging algorithm starting from the guess molecular orbital (MO) coefficients obtained by diagonalising the one-electron Hamiltonian matrix (lines~\texttt{6}--\texttt{11}).
+					\item The convergence criterion is when the maximum DIIS error becomes smaller than \SI{1e-13}{} (line~\texttt{12}). This is a very tight criterion.
+					\item The maximum number of SCF cycles is \SI{1000}{} (line~\texttt{13}). This is more than enough here because convergence can be reached very quickly in this particular example.
+					\item During each SCF cycle, the code maximises overlap with the orbitals from the previous cycle. This behaviour starts from cycle 1 (line~\texttt{14}) where the code maximises overlap with the guess orbitals.
+					\item After each cycle, the code prints out only the minimal and useful output together with the component breakdown of SCF electronic energy (line~\texttt{15}).
+					\item After convergence, the code prints out the occupied orbitals plus five virtual orbitals (line~\texttt{16}).
 				\end{enumerate}
-				What is the value of $\langle \hat{S}^2 \rangle$ of the converged solution and why? Assign a term symbol to this solution.
-			\end{Task}
+		
+			To carry out the above \textsc{Q-Chem} calculation, copy \cref{listing:He.RHF.STO-3G.inp} from the \texttt{git} repository to a location of your choice and then execute the following command in a shell:
+			%
+				\begin{lstlisting}[style = custombash]
+					qchem -nt 6 He.RHF.STO-3G.inp He.RHF.STO-3G.out
+				\end{lstlisting}
+			%
+			which instructs \textsc{Q-Chem} to run a calculation with the input parameters specified in \texttt{He.RHF.STO-3G.inp} using six OpenMP threads and write the outputs to \texttt{He.RHF.STO-3G.out}.
+			%
+				\begin{Task}
+					Examine the output file and determine the following:
+					\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
+						\item the DIIS error at convergence;
+						\item the SCF energy of the converged solution;
+						\item the contributing components of the SCF energy;
+						\item the MO energies; and
+						\item the MO coefficients in terms of the atomic orbital (AO) basis functions.
+					\end{enumerate}
+					What is the value of $\langle \hat{S}^2 \rangle$ of the converged solution and why? Assign a term symbol to this solution.
+				\end{Task}
 
 		
 	\subsection{Unrestricted Hartree--Fock (UHF)}
@@ -131,6 +131,7 @@
 
 		
 		\subsubsection{Numbers of Solutions}
+			\label{subsubsec:numofsols}
 		
 			It should not be surprising that a larger basis set inevitably introduces more solutions to the non-linear HF equations.
 			Before proceeding, think about the three basis sets STO-3G, 6-31G*, and 6-31G** for \ce{He} and answer the questions in the following \namecref{task:numberofsolsHe}.
@@ -169,12 +170,13 @@
 			These scratch files are binary files with very specific formats that \textsc{Q-Chem} uses to efficiently store and retrieve data such as MO coefficients during its run.
 			By specifying the inputs of the two jobs in the same file, the second job also has access to the scratch files produced by the first job.
 			Therefore, the option \texttt{read} in the \qchemsection{molecule} section (line \texttt{20}) instructs \textsc{Q-Chem} to read from the scratch files the molecular configuration of the first job and use it for the second job.
-			Then, on line \texttt{27}, the option \texttt{read} of \qchemremvar{SCF\_GUESS} tells \textsc{Q-Chem} to use the set of molecular orbitals from the scratch files, which should correspond to the molecular orbitals of the RHF solution located in the first job, as the initial guess.
-			But more crucially, there is now a new section called \qchemsection{occupied} (lines \texttt{35}--\texttt{38}) through which we can control which of the read-in molecular orbitals should be occupied.
+			Then, on line \texttt{27}, the option \texttt{read} of \qchemremvar{SCF\_GUESS} tells \textsc{Q-Chem} to use the set of MOs from the scratch files, which should correspond to the MOs of the RHF solution located in the first job, as the initial guess.
+			But more crucially, there is now a new section called \qchemsection{occupied} (lines~\texttt{35}--\texttt{38}) through which we can control which of the read-in MOs should be occupied.
 			In our example, we know that the RHF solution from the first job has in each spin space two MOs, one occupied and one virtual, with index 1 and 2 respectively.
 			Since we wish to use the virtual orbital as guess for this job, we ``occupy'' it by specifying its index for both $\alpha$ and $\beta$ spin spaces in lines \texttt{36} and \texttt{37} respectively.
 			
 				\begin{Task}
+					\label{task:He.RHF.excited}
 					Study \texttt{He.RHF.6-31GSTAR.excited.out} and answer the following:
 						\begin{enumerate}[topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex,label=(\alph*)]
 							\item How do the occupied MOs of the two solutions differ? Are the occupied MOs of the second solution identical to the virtual MOs of the first solution? Why or why not?
@@ -189,3 +191,42 @@
 							\item Can this method be used to obtain other solutions that are linear combinations of the degenerate solutions found above?
 						\end{enumerate}
 				\end{Task}
+			
+			Even though this method allows us to find multiple SCF solutions, it has several drawbacks.
+			It is clearly inefficient because we have to specify the occupation pattern for each solution we seek to find and will quickly become unmanageable if there are more electrons and if a larger basis set is used.
+			This of course assumes that we already know what solutions to expect, so the solutions we find are only as good as our guesses.
+			In addition, as you should have realised in \cref{task:He.RHF.excited}, this method can only swap occupied and virtual orbitals exactly but does not allow for an arbitrary mixing between them according to
+				\begin{equation*}
+					\chi = \chi^\mathrm{occ} \cos\theta + \chi^\mathrm{vir} \sin\theta
+				\end{equation*}
+			for $0 \leq \theta \leq 2\pi$, and might therefore miss out several solutions.
+			Later on in the tutorial, we will meet \textit{metadynamics}, a method developed to overcome some of these problems\autocite{article:Thom2008}.
+			
+		
+		\subsection{Restarting from Scratch}
+			
+			Another major challenge with the method in \cref{subsubsec:numofsols} that will become apparent for larger systems involves the existence and consistency of the read-in MOs.
+			Note that so far, whenever we want to find an excited solution, we always have to run two linked jobs with the first one to converge to the reference solution from which we construct the guess MOs for the second one.
+			In \ce{He}, with a small basis set, the reference solution is almost always the same solution that gets converged to very quickly.
+			However, for larger systems in larger basis sets, there is no guarantee that the same solution is always converged to and that the amount of time taken to reach convergence is always sensible.
+			After all, even if we ignore all the above uncertainties, it is still a waste of time and computational resources to keep having to search for the same solution over and over again only to use it as an initial guess.
+			It would be much better if we could store the MO coefficients of the reference solution once and for all and read them in as the initial guess whenever we need them.
+			It turns out that \textsc{Q-Chem} does allow us to do this, albeit in a rather cumbersome way.
+			In what follows, we will recalculate the excited RHF solution for \ce{He} in 6-31G*, but instead of running both jobs at once using the input file in \cref{listing:He.RHF.6-31GSTAR.excited.inp}, we will run the first job and save the scratch files, then run the second job \textit{separately} reading in the MO coefficients from these scratch files.
+			
+			In a shell, execute
+				%
+				\begin{lstlisting}[style = custombash]
+					qchem -nt 6 -save He.RHF.6-31GSTAR.inp He.RHF.6-31GSTAR.out savedscratch
+				\end{lstlisting}
+				%
+			which saves all the binary scratch files in \texttt{\$QCSCRATCH/savedscratch}, where \texttt{QCSCRATCH} is an environment variable that tells \textsc{Q-Chem} the location in which it should read and write scratch files.
+			Inspect the new \texttt{He.RHF.6-31GSTAR.out} file and verify that the MO coefficients are those expected for the ground RHF solution of \ce{He}.
+			Once happy, create a new file called \texttt{He.RHF.6-31GSTAR.excited.secondjobonly.inp}, paste into it lines~\texttt{19}--\texttt{38} of \cref{listing:He.RHF.6-31GSTAR.excited.inp} (\textit{i.e.}, without \texttt{@@@}), and then execute
+				%
+				\begin{lstlisting}[style = custombash]
+					qchem -nt 6 -save He.RHF.6-31GSTAR.excited.secondjobonly.inp He.RHF.6-31GSTAR.excited.secondjobonly.out savedscratch
+				\end{lstlisting}
+				%
+			which will now read in the molecular configuration and MO coefficients from \texttt{\$QCSCRATCH/savedscratch} and use the requested MOs in \qchemsection{occupied} as the initial guess.
+			The solution in the output file should be the same as that found by the second job in \cref{listing:He.RHF.6-31GSTAR.excited.inp}.
